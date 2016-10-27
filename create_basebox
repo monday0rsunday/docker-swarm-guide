@@ -1,0 +1,9 @@
+#!/bin/bash
+# build base box
+pushd $1
+# build & start
+vagrant destroy -f
+vagrant up
+# shutdown & package
+vagrant package --output base.box
+popd

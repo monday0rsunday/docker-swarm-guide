@@ -1,0 +1,9 @@
+#!/bin/bash
+# Helper script for invoking vagrant command line. Due to problem
+# of variables in Vagrantfile, we need to setup them before invoke
+# vagrant command
+
+CUR_DIR=$(dirname "${BASH_SOURCE[0]}")
+. ${CUR_DIR}/config
+
+vagrant $@

@@ -1,0 +1,11 @@
+#!/bin/bash
+# This script contains all configurations are stored in environment variables
+
+# Total number of VMs
+export NODE_NUM=3
+
+# Default network driver is bridge, all VMs are attached to below network interface
+export NETWORK=vboxnet0
+
+# IP range of VMs, start from 101..255
+export IP_ADDR_PREFIX=192.168.10

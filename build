@@ -1,0 +1,18 @@
+#!/bin/bash
+# Helper script for building all VM instances
+
+CUR_DIR=$(dirname "${BASH_SOURCE[0]}")
+. ${CUR_DIR}/config
+
+if [ ! -f ./basebox/base.box ]; then
+    ./create_basebox basebox
+    vagrant box add -f spiral/docker ./basebox/base.box
+fi
+
+# VirtualBox
+# create new vboxnet{i}, from 0 if required
+# VBoxManage hostonlyif create
+# choose a vboxnet{i}, modify it's IP to 192.168.10.100
+# VBoxManage hostonlyif ipconfig vboxnet0 --ip 192.168.10.100
+
+vagrant up
