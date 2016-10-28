@@ -15,6 +15,8 @@ docker run -d -p 8500:8500 --restart always progrium/consul -server -bootstrap
 * Step 2: Setup Docker daemon in all VM instances (remember to leave Swarm mode )
 
 ```
+# VMs is cloned, remember removing duplicated Docker key.json
+rm /etc/docker/key.json
 cat >> /etc/default/docker <<EOF
 DOCKER_OPTS="-H tcp://0.0.0.0:2376 --log-level=debug --cluster-store=\"consul://${host_ip}:8500\" --cluster-advertise=\"${vm_ethx_interface}:2376\""
 EOF
@@ -31,7 +33,7 @@ service docker restart
 * Step 1: Create Swarm manager in one VM
 
 ```
-docker -H :2376 run --name swarm-master --publish 4000:4000 -d swarm:latest manage -H tcp://0.0.0.0:4000 --strategy spread --advertise ${vm_ip}:4000 consul://${host_ip}:8500
+docker -H :2376 run --name swarm-master --publish 4000:4000 -d swarm:latest manage -H tcp://0.0.0.0:4000 --strategy spread --advertise ${manager_vm_ip}:4000 consul://${host_ip}:8500
 ```
 
 * Step 2: Join Swarm node
@@ -51,4 +53,10 @@ docker -H :2376 run --rm swarm list consul://${host_ip}:8500
 
 ```
 docker -H tcp://${manager_ip}:4000 run --rm nginx
+```
+
+* Step 5: Run container in specific node with specific criteria
+
+```
+docker -H tcp://${manager_ip}:4000 run --rm -e constraint:node==vm1 nginx
 ```
